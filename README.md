@@ -61,7 +61,7 @@ pip install -e .
 gitgoblin summon --debounce 5
 ```
 
-### �️ `gitgoblin sneak`
+### ⚡ `gitgoblin sneak`
 **A Stealthy Strike.** Force the goblin to grab EVERYTHING and push it right now. No waiting. No mercy.
 - `--message`: Give the goblin a specific grumble (commit message) to shout.
 
@@ -69,7 +69,7 @@ gitgoblin summon --debounce 5
 gitgoblin sneak --message "I fixed the thing, don't ask how"
 ```
 
-### � `gitgoblin crystalball`
+### 🔮 `gitgoblin crystalball`
 **Peer into the Future (and Past).** See the goblin's status, its last hoarding session, and the health of your repository.
 
 ```bash
@@ -110,7 +110,7 @@ This creature was birthed from the mind of **[sahhoutiamine](https://github.com/
 
 ---
 
-## � License
+## ⚖️ License
 
 The Goblin is bound by the **MIT License**. You can use it, change it, or sell it to a traveling circus, as long as you keep the original notice.
 
