@@ -12,8 +12,8 @@ def print_banner():
     """Print the GitGoblin banner"""
     banner = """
     ╔═══════════════════════════════════════╗
-    ║         👹 G I T G O B L I N 👹       ║
-    ║   Your Mischievous Git Companion     ║
+    ║         👹 G I T G O B L I N 👹      ║
+    ║   Your Mischievous Git Companion      ║
     ╚═══════════════════════════════════════╝
     """
     click.echo(click.style(banner, fg='green', bold=True))

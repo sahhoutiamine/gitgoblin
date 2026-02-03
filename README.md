@@ -38,6 +38,7 @@ To bring the Goblin into your world, you must use the ancient scrolls of `pip`:
 ```bash
 pip install gitgoblin
 ```
+> *"Legends say, 'It's not working. Try the second way."*
 
 ### From the Source Code Dungeons
 ```bash
