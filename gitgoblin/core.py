@@ -92,18 +92,18 @@ class GoblinWatcher:
             
             # Simple message based on changes
             if '+' in diff_stat and '-' in diff_stat:
-                message = f"🔧 Modified {file_path}"
+                message = f"Modified {file_path}"
             elif '+' in diff_stat:
-                message = f"✨ Added content to {file_path}"
+                message = f"Added content to {file_path}"
             elif '-' in diff_stat:
-                message = f"🗑️  Removed content from {file_path}"
+                message = f"Removed content from {file_path}"
             else:
-                message = f"📝 Updated {file_path}"
+                message = f"Updated {file_path}"
             
             return f"{message} at {timestamp}"
             
         except:
-            return f"📝 Updated {file_path} at {timestamp}"
+            return f"Updated {file_path} at {timestamp}"
     
     def commit_and_push(self, file_path):
         """Commit and push a file to GitHub"""

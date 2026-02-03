@@ -16,8 +16,8 @@ setup(
     description='👹 A mischievous goblin that automatically commits and pushes your Git changes',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    author='GitGoblin Team',
-    url='https://github.com/yourusername/gitgoblin',
+    author='GitGoblin Master (sahhoutiamine)',
+    url='https://github.com/sahhoutiamine/gitgoblin',
     packages=find_packages(),
     install_requires=[
         'click>=8.0.0',

@@ -4,7 +4,7 @@ A mischievous little goblin that watches your files and commits them to GitHub
 """
 
 __version__ = '1.0.0'
-__author__ = 'GitGoblin Team'
+__author__ = 'GitGoblin Master (sahhoutiamine)'
 
 from .core import GoblinWatcher
 from .utils import GoblinStatus
