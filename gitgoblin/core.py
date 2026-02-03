@@ -10,6 +10,8 @@ from pathlib import Path
 from datetime import datetime
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+from .ai_commit import AICommitGenerator
+from .config import GoblinConfig
 
 
 class GoblinFileHandler(FileSystemEventHandler):
@@ -70,14 +72,35 @@ class GoblinWatcher:
         self.debounce_seconds = debounce_seconds
         self.pid_file = self.repo_path / '.git' / 'gitgoblin.pid'
         
+        # Load configuration
+        self.config = GoblinConfig(repo_path)
+        
+        # Initialize AI commit generator if API key is available
+        api_key = self.config.get_api_key()
+        self.ai_generator = AICommitGenerator(api_key, repo_path) if api_key else None
+        
         # Verify git repository
         if not (self.repo_path / '.git').exists():
             raise ValueError(f"Not a git repository: {repo_path}")
     
     def generate_commit_message(self, file_path):
-        """Generate a commit message"""
+        """Generate a commit message using AI or fallback to simple message"""
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
+        # Try AI generation if enabled and available
+        if self.ai_generator and self.config.is_ai_enabled():
+            try:
+                print("🤖 Generating AI commit message...")
+                ai_message = self.ai_generator.generate_commit_message(file_path)
+                if ai_message:
+                    return ai_message
+                else:
+                    print("⚠️  AI generation returned empty, using fallback")
+            except Exception as e:
+                print(f"⚠️  AI generation failed: {e}")
+                print("📝 Using fallback commit message")
+        
+        # Fallback to simple message
         try:
             # Get diff stats
             result = subprocess.run(
@@ -92,18 +115,18 @@ class GoblinWatcher:
             
             # Simple message based on changes
             if '+' in diff_stat and '-' in diff_stat:
-                message = f"🔧 Modified {file_path}"
+                message = f"Modified {file_path}"
             elif '+' in diff_stat:
-                message = f"✨ Added content to {file_path}"
+                message = f"Added content to {file_path}"
             elif '-' in diff_stat:
-                message = f"🗑️  Removed content from {file_path}"
+                message = f"Removed content from {file_path}"
             else:
-                message = f"📝 Updated {file_path}"
+                message = f"Updated {file_path}"
             
             return f"{message} at {timestamp}"
             
         except:
-            return f"📝 Updated {file_path} at {timestamp}"
+            return f"Updated {file_path} at {timestamp}"
     
     def commit_and_push(self, file_path):
         """Commit and push a file to GitHub"""
@@ -179,6 +202,22 @@ class GoblinWatcher:
             # Generate or use custom message
             if custom_message:
                 message = custom_message
+            elif self.ai_generator and self.config.is_ai_enabled():
+                # Use AI to generate commit message for all changes
+                try:
+                    print("🤖 Generating AI commit message for all changes...")
+                    ai_message = self.ai_generator.generate_sneak_commit_message()
+                    if ai_message:
+                        message = ai_message
+                    else:
+                        print("⚠️  AI generation returned empty, using fallback")
+                        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        message = f"🗡️  Stealth commit at {timestamp}"
+                except Exception as e:
+                    print(f"⚠️  AI generation failed: {e}")
+                    print("📝 Using fallback commit message")
+                    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    message = f"🗡️  Stealth commit at {timestamp}"
             else:
                 timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 message = f"🗡️  Stealth commit at {timestamp}"

@@ -23,7 +23,8 @@ GitGoblin feeds on two things: **forgotten commits** and **developer laziness**.
 
 - 🔍 **Goblin Senses**: Real-time monitoring of your codebase. It sees everything.
 - 🪙 **Hoarding Instinct**: Automatically commits and pushes files the moment you save them.
-- � **Magical Portals**: Instant synchronization with your remote GitHub repository.
+- 🌀 **Magical Portals**: Instant synchronization with your remote GitHub repository.
+- 🤖 **AI Brain**: Generate descriptive commit messages using Groq AI - blazingly fast! (NEW!)
 - 🗡️ **Stealth Operations**: Force a commit with `sneak` when you're feeling especially lazy.
 - 🔮 **Crystal Ball**: Peer into the Goblin's mind to see what it's been up to.
 - 🎭 **Daemon Possession**: Can run as a background spirit, haunting your directory forever (or until banished).
@@ -75,6 +76,23 @@ gitgoblin sneak --message "I fixed the thing, don't ask how"
 ```bash
 gitgoblin crystalball
 ```
+
+### 🧙 `gitgoblin enchant`
+**Empower with AI Magic.** Configure AI-powered commit messages using Groq API. Get descriptive, professional commits automatically - blazingly fast!
+
+```bash
+# Set your Groq API key
+gitgoblin enchant --api-key gsk-your-key-here
+
+# Enable/disable AI commits
+gitgoblin enchant --enable
+gitgoblin enchant --disable
+
+# Show current configuration
+gitgoblin enchant --show
+```
+
+📖 **[Read the full AI Commits Guide](AI_COMMITS.md)**
 
 ### 🛑 `gitgoblin banish`
 **Send it Back to the Void.** Stop the automation and tell the goblin to go to sleep.

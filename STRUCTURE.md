@@ -7,13 +7,17 @@ gitgoblin/
 │   ├── __init__.py            # Package initialization
 │   ├── cli.py                 # Command-line interface (click commands)
 │   ├── core.py                # Core watcher & git functionality
-│   └── utils.py               # Utilities, status, formatting
+│   ├── utils.py               # Utilities, status, formatting
+│   ├── ai_commit.py           # AI commit message generator (NEW)
+│   └── config.py              # Configuration management (NEW)
 │
 ├── setup.py                    # Package installation configuration
 ├── requirements.txt            # Python dependencies
 ├── MANIFEST.in                 # Files to include in distribution
 ├── README.md                   # Main documentation
 ├── INSTALL.md                  # Installation guide
+├── AI_COMMITS.md              # AI feature documentation (NEW)
+├── TEST_AI.md                 # AI testing guide (NEW)
 ├── LICENSE                     # MIT License
 ├── .gitignore                  # Git ignore rules
 └── quickstart.sh              # Quick test script
@@ -46,6 +50,19 @@ gitgoblin/
 - Terminal formatting functions
 - Banner and message printing
 - Repository information retrieval
+
+**`gitgoblin/ai_commit.py`** (NEW)
+- `AICommitGenerator`: AI-powered commit message generator
+- DeepSeek API integration
+- Git diff analysis
+- Conventional commits format
+- Automatic fallback handling
+
+**`gitgoblin/config.py`** (NEW)
+- `GoblinConfig`: Configuration management
+- API key storage and retrieval
+- AI settings management
+- Secure config file handling
 
 ### Configuration Files
 
