@@ -129,6 +129,46 @@ Make sure all dependencies are installed:
 pip install -r requirements.txt
 ```
 
+### "ModuleNotFoundError: No module named 'click'" (Linux)
+
+This error occurs when GitGoblin is installed but its dependencies aren't. This commonly happens on Linux when using `pip install` without proper flags.
+
+**Solution 1: Reinstall with dependencies (Recommended)**
+```bash
+# First, uninstall the current installation
+pip uninstall gitgoblin
+
+# Navigate to the gitgoblin directory
+cd /path/to/gitgoblin
+
+# Reinstall with all dependencies
+pip install -e .
+```
+
+**Solution 2: Install dependencies separately**
+```bash
+# Navigate to the gitgoblin directory
+cd /path/to/gitgoblin
+
+# Install all required dependencies
+pip install -r requirements.txt
+```
+
+**Solution 3: Use pip3 and --user flag (if permission issues)**
+```bash
+# Uninstall first
+pip3 uninstall gitgoblin
+
+# Reinstall for current user
+pip3 install --user -e .
+```
+
+**Verify the fix:**
+```bash
+python3 -c "import click; import watchdog; import daemon; import requests; print('All dependencies installed!')"
+gitgoblin --help
+```
+
 ### Python Version Issues
 
 Check your Python version:

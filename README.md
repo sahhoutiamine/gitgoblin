@@ -48,6 +48,8 @@ cd gitgoblin
 pip install -e .
 ```
 
+> **🐧 Linux Users:** If you see `ModuleNotFoundError: No module named 'click'`, try running `pip install -r requirements.txt` to ensure all dependencies are installed.
+
 ---
 
 ## 🧙 The Command Grimoire

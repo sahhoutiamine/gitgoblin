@@ -140,7 +140,7 @@ def banish():
 
 @cli.command()
 @click.option('--path', '-p', default='.', help='Path to git repository')
-@click.option('--api-key', '-k', default=None, help='DeepSeek API key')
+@click.option('--api-key', '-k', default=None, help='Groq API key')
 @click.option('--enable/--disable', default=None, help='Enable or disable AI commits')
 @click.option('--show', is_flag=True, help='Show current configuration')
 def enchant(path, api_key, enable, show):
@@ -202,7 +202,7 @@ def enchant(path, api_key, enable, show):
         if not api_key and enable is None and not show:
             click.echo("🧙 GitGoblin AI Configuration\n")
             click.echo("Options:")
-            click.echo("  --api-key, -k    Set DeepSeek API key")
+            click.echo("  --api-key, -k    Set Groq API key")
             click.echo("  --enable         Enable AI commit messages")
             click.echo("  --disable        Disable AI commit messages")
             click.echo("  --show           Show current configuration")

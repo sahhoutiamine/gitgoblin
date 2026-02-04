@@ -23,6 +23,7 @@ setup(
         'click>=8.0.0',
         'watchdog>=4.0.0',
         'python-daemon>=3.0.0',
+        'requests>=2.31.0',
     ],
     entry_points={
         'console_scripts': [
