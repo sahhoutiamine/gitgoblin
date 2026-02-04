@@ -1,6 +1,6 @@
 # 👹 GitGoblin: The Mischievous Hoarder of Commits
 
-**Version 1.0.0** | **Created by the Great Goblin Master: [sahhoutiamine](https://github.com/sahhoutiamine)**
+**Version 1.1.0** | **Created by the Great Goblin Master: [sahhoutiamine](https://github.com/sahhoutiamine)**
 
 > *"Deep within the `.git` dungeons of your project, a creature stirs. It doesn't sleep. It doesn't drink coffee. It only watches. It only waits. It only... hoards."*
 
