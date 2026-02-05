@@ -37,7 +37,7 @@ class GoblinFileHandler(FileSystemEventHandler):
         self.pending_files.add(str(relative_path))
         self.last_change_time[str(relative_path)] = time.time()
         
-        print(f"👁️  Goblin spotted: {relative_path}")
+        print(f"👁️  Goblin spotted changes in: {relative_path}")
     
     def _should_ignore(self, file_path):
         """Check if file should be ignored"""
@@ -90,15 +90,15 @@ class GoblinWatcher:
         # Try AI generation if enabled and available
         if self.ai_generator and self.config.is_ai_enabled():
             try:
-                print("🤖 Generating AI commit message...")
+                print("🤖 The Goblin is consulting the AI spirits for an inscription...")
                 ai_message = self.ai_generator.generate_commit_message(file_path)
                 if ai_message:
                     return ai_message
                 else:
-                    print("⚠️  AI generation returned empty, using fallback")
+                    print("⚠️  The spirits are silent, using a common grumble")
             except Exception as e:
-                print(f"⚠️  AI generation failed: {e}")
-                print("📝 Using fallback commit message")
+                print(f"⚠️  The AI enchantment flickered: {e}")
+                print("📝 Using a simple timestamp grumble")
         
         # Fallback to simple message
         try:
@@ -129,9 +129,9 @@ class GoblinWatcher:
             return f"Updated {file_path} at {timestamp}"
     
     def commit_and_push(self, file_path):
-        """Commit and push a file to GitHub"""
+        """Commit and push a file to the GitHub vault"""
         try:
-            print(f"🪙 Hoarding commit for: {file_path}")
+            print(f"🪙 Hoarding gems from: {file_path}")
             
             # Stage
             subprocess.run(
@@ -156,7 +156,7 @@ class GoblinWatcher:
             )
             
             # Push
-            print(f"🚀 Pushing to GitHub...")
+            print(f"🚀 Yeeting the hoard to the GitHub abyss...")
             subprocess.run(
                 ['git', 'push'],
                 cwd=self.repo_path,
@@ -165,12 +165,12 @@ class GoblinWatcher:
                 capture_output=True
             )
             
-            print(f"✅ Successfully hoarded: {file_path}")
+            print(f"✅ Successfully hoarded treasures from: {file_path}")
             print("-" * 60)
             return True
             
         except subprocess.CalledProcessError as e:
-            print(f"❌ Goblin failed: {e}")
+            print(f"❌ The Ritual failed! The Goblin tripped: {e}")
             print("-" * 60)
             return False
     
@@ -205,19 +205,19 @@ class GoblinWatcher:
             elif self.ai_generator and self.config.is_ai_enabled():
                 # Use AI to generate commit message for all changes
                 try:
-                    print("🤖 Generating AI commit message for all changes...")
+                    print("🤖 The Goblin is channeling AI spirits for a grand inscription...")
                     ai_message = self.ai_generator.generate_sneak_commit_message()
                     if ai_message:
                         message = ai_message
                     else:
-                        print("⚠️  AI generation returned empty, using fallback")
+                        print("⚠️  The spirits provide no wisdom, using a default grumble")
                         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                        message = f"🗡️  Stealth commit at {timestamp}"
+                        message = f"🗡️  Stealthy snatch at {timestamp}"
                 except Exception as e:
-                    print(f"⚠️  AI generation failed: {e}")
-                    print("📝 Using fallback commit message")
+                    print(f"⚠️  The AI spell misfired: {e}")
+                    print("📝 Reverting to a common grumble")
                     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    message = f"🗡️  Stealth commit at {timestamp}"
+                    message = f"🗡️  Stealthy snatch at {timestamp}"
             else:
                 timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 message = f"🗡️  Stealth commit at {timestamp}"
@@ -233,7 +233,7 @@ class GoblinWatcher:
             )
             
             # Push
-            print("🚀 Pushing to GitHub...")
+            print("🚀 Yeeting the entire hoard to the GitHub abyss...")
             subprocess.run(
                 ['git', 'push'],
                 cwd=self.repo_path,
@@ -275,16 +275,16 @@ class GoblinWatcher:
             # Generate message
             if self.ai_generator and self.config.is_ai_enabled():
                 try:
-                    print("🤖 Generating AI commit message for all changes...")
+                    print("🤖 The Goblin is meditating on the ritual's prophecy...")
                     ai_message = self.ai_generator.generate_sneak_commit_message()
                     if ai_message:
                         return ai_message
                 except Exception as e:
-                    print(f"⚠️  AI generation failed: {e}")
+                    print(f"⚠️  The prophecy is obscured: {e}")
             
             # Fallback
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            return f"Ritual commit at {timestamp}"
+            return f"Great Ritual at {timestamp}"
             
         except subprocess.CalledProcessError as e:
             print(f"❌ Ritual preparation failed: {e}")

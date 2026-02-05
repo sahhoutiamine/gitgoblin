@@ -15,35 +15,34 @@ from .config import GoblinConfig
 @click.group(invoke_without_command=True)
 @click.pass_context
 def cli(ctx):
-    """👹 GitGoblin - Automatic Git Commit & Push Daemon"""
+    """👹 GitGoblin - The Mischievous Hoarder of Commits"""
     if ctx.invoked_subcommand is None:
         print_banner()
-        click.echo("\n📖 Available Spells:\n")
-        click.echo("  👹 gitgoblin summon      - Awaken the goblin (start watching)")
-        click.echo("  🗡️  gitgoblin sneak       - Force instant commit & push")
-        click.echo("  🔮 gitgoblin crystalball - Check goblin activity")
-        click.echo("  🧙 gitgoblin enchant     - Configure AI commit messages")
-        click.echo("  🛑 gitgoblin banish      - Expel the goblin (stop watching)")
-        click.echo("\n✨ Use 'gitgoblin <command> --help' for more info\n")
+        click.echo("\n📖 The Goblin's Grimoire (Available Spells):\n")
+        click.echo("  👹 summon      - Wake the beast and begin the watch")
+        click.echo("  🗡️  sneak       - Perform a stealthy smash-and-grab commit")
+        click.echo("  🔮 crystalball - Peer into the vault of hoarded treasures")
+        click.echo("  🧙 enchant     - Bestow AI wisdom upon the goblin")
+        click.echo("  🛑 banish      - Cast the goblin back into the void")
+        click.echo("\n✨ Recite 'gitgoblin <spell> --help' to learn more secrets\n")
 
 
 @cli.command()
-@click.option('--path', '-p', default='.', help='Path to git repository')
-@click.option('--debounce', '-d', default=2, help='Seconds to wait before committing')
-@click.option('--daemon', '-bg', is_flag=True, help='Run as background daemon')
-@click.option('--ritual', is_flag=True, help='Perform the summoning ritual (commit & version bump)')
+@click.option('--path', '-p', default='.', help='Dungeon path (repository)')
+@click.option('--debounce', '-d', default=2, help='Seconds to wait for silence')
+@click.option('--daemon', '-bg', is_flag=True, help='Run as a lingering spirit')
+@click.option('--ritual', is_flag=True, help='Perform the ritual of ascension (v1.1.1)')
 def summon(path, debounce, daemon, ritual):
     """
-    👹 Summon GitGoblin to watch your files
+    👹 Awaken GitGoblin to haunt your files
     
-    The goblin will monitor your repository and automatically
-    commit & push changes whenever you save a file.
+    The beast will lurk in your directory, snatching every 
+    change and hoarding it in the GitHub vault.
     """
-
     print_banner()
     
     if ritual:
-        click.echo("🕯️  Beginning the ritual...\n")
+        click.echo("🕯️  Chanting the incantations of the Ritual...\n")
         try:
             watcher = GoblinWatcher(path)
             message = watcher.ritual_predict()
@@ -76,55 +75,55 @@ def summon(path, debounce, daemon, ritual):
             print_error(f"Ritual failed: {e}")
             sys.exit(1)
 
-    click.echo("👹 Summoning GitGoblin...\n")
+    click.echo("👹 Preparing the summoning circles...\n")
     
     try:
         watcher = GoblinWatcher(path, debounce)
         
         if daemon:
-            click.echo("🌙 GitGoblin will run in the background...")
-            click.echo("💡 Tip: Use 'gitgoblin banish' to stop it\n")
+            click.echo("🌙 The Goblin is now a lingering spirit in the shadows...")
+            click.echo("💡 Tip: Use 'gitgoblin banish' to cast it away\n")
             watcher.run_daemon()
         else:
-            click.echo("🔍 GitGoblin is now watching your files...")
-            click.echo("🪙 Collecting commits automatically...")
-            click.echo("💡 Press Ctrl+C to banish the goblin\n")
+            click.echo("🔍 The Goblin's eyes are open. It sees your edits...")
+            click.echo("🪙 Collecting its hoard of commits automatically...")
+            click.echo("💡 Press Ctrl+C to send the goblin back to sleep\n")
             click.echo("-" * 60)
             watcher.run()
             
     except ValueError as e:
-        print_error(f"Summoning failed: {e}")
+        print_error(f"The summoning failed: {e}")
         sys.exit(1)
     except KeyboardInterrupt:
         click.echo("\n")
-        print_info("🔥 GitGoblin has been banished.")
-        print_info("🛑 Auto commits stopped.")
+        print_info("🔥 The Goblin has been vanished. The shadows retreat.")
+        print_info("🛑 Auto-hoarding has ceased.")
     except Exception as e:
-        print_error(f"Unexpected error: {e}")
+        print_error(f"A dark curse has occurred: {e}")
         sys.exit(1)
 
 
 @cli.command()
-@click.option('--path', '-p', default='.', help='Path to git repository')
-@click.option('--message', '-m', default=None, help='Custom commit message')
+@click.option('--path', '-p', default='.', help='Dungeon path (repository)')
+@click.option('--message', '-m', default=None, help='A specific grumble (custom message)')
 def sneak(path, message):
     """
-    🗡️ Force an instant stealth commit & push
+    🗡️ Perform an instant stealth commit & push
     
-    GitGoblin performs a quick smash-and-grab commit operation,
-    staging all current changes and pushing them immediately.
+    The goblin performs a quick smash-and-grab operation,
+    snatching all changes and yeeting them into the GitHub abyss.
     """
-    click.echo("🗡️  GitGoblin preparing stealth operation...\n")
+    click.echo("🗡️  The Goblin is preparing a stealthy snatch...\n")
     
     try:
         watcher = GoblinWatcher(path)
         success = watcher.sneak_commit(message)
         
         if success:
-            print_success("✅ Stealth commit successful!")
-            print_success("📦 Changes delivered to GitHub.")
+            print_success("The loot has been secured in the cloud vault!")
+            print_info("📦 Your hoarded gems are safe at GitHub.")
         else:
-            print_error("❌ Stealth operation failed!")
+            print_error("A trap was sprung! The stealth operation failed.")
             
     except Exception as e:
         print_error(f"Sneak attack failed: {e}")
@@ -132,45 +131,45 @@ def sneak(path, message):
 
 
 @cli.command()
-@click.option('--path', '-p', default='.', help='Path to git repository')
+@click.option('--path', '-p', default='.', help='Dungeon path (repository)')
 def crystalball(path):
     """
-    🔮 Check GitGoblin's current activity and status
+    🔮 Peer into the Goblin's cavern and check its hoard
     
-    Peer into the goblin's cave to see what it's been hoarding.
-    Shows recent commits, push times, and configuration.
+    Look deep into the crystal ball to see recent hoards,
+    push times, and the state of your precious code.
     """
-    click.echo("🔮 Peering into the crystal ball...\n")
+    click.echo("🔮 Focusing your mind on the crystal ball...\n")
     
     try:
         status = GoblinStatus(path)
         status.display()
         
     except Exception as e:
-        print_error(f"Crystal ball is cloudy: {e}")
+        print_error(f"The crystal ball is cloudy and dark: {e}")
         sys.exit(1)
 
 
 @cli.command()
 def banish():
     """
-    🛑 Banish GitGoblin and stop all automation
+    🛑 Cast the Goblin back into the void
     
-    Expels the goblin from your project, stopping all file
-    monitoring and automatic commits. Configuration is preserved.
+    Expels the lingering spirit from your dungeon, stopping
+    all file monitoring and hoarding. The hoard remains safe.
     """
-    click.echo("🔥 Attempting to banish GitGoblin...\n")
+    click.echo("🔥 Reciting the banishment ritual...\n")
     
     try:
         watcher = GoblinWatcher('.')
         stopped = watcher.stop_daemon()
         
         if stopped:
-            print_success("👹 GitGoblin has been banished!")
-            print_info("🛑 Auto commits stopped.")
-            print_info("💤 The goblin retreats into the shadows...")
+            print_success("The GitGoblin has been banished from this realm!")
+            print_info("🛑 The watch has ended.")
+            print_info("💤 The beast retreats into the deep shadows...")
         else:
-            print_info("👻 No active goblin found in this realm.")
+            print_info("👻 There is no entity haunting this dungeon currently.")
             
     except Exception as e:
         print_error(f"Banishment ritual failed: {e}")
@@ -178,75 +177,70 @@ def banish():
 
 
 @cli.command()
-@click.option('--path', '-p', default='.', help='Path to git repository')
-@click.option('--api-key', '-k', default=None, help='Groq API key')
-@click.option('--enable/--disable', default=None, help='Enable or disable AI commits')
-@click.option('--show', is_flag=True, help='Show current configuration')
+@click.option('--path', '-p', default='.', help='Dungeon path')
+@click.option('--api-key', '-k', default=None, help='The Secret Key of AI wisdom')
+@click.option('--enable/--disable', default=None, help='Give/take the goblin its voice')
+@click.option('--show', is_flag=True, help='Reveal current enchantments')
 def enchant(path, api_key, enable, show):
     """
-    🧙 Configure AI-powered commit messages
+    🧙 Bestow AI wisdom upon the common GitGoblin
     
-    Set up Groq AI to generate descriptive commit messages
-    automatically. Requires a Groq API key from https://console.groq.com/
+    Enchant your goblin with Groq AI to generate poetic and
+    descriptive inscriptions for its hoard.
     """
     try:
         config = GoblinConfig(path)
         
         if show:
-            # Show current configuration
-            click.echo("🔮 Current AI Configuration:\n")
+            click.echo("🔮 Active Enchantments:\n")
             current_key = config.get_api_key()
             if current_key:
                 masked_key = current_key[:8] + "..." + current_key[-4:] if len(current_key) > 12 else "***"
-                click.echo(f"  API Key: {masked_key}")
+                click.echo(f"  Secret Key: {masked_key}")
             else:
-                click.echo("  API Key: Not configured")
+                click.echo("  Secret Key: Not bestowed yet")
             
             ai_enabled = config.is_ai_enabled()
-            click.echo(f"  AI Commits: {'✅ Enabled' if ai_enabled else '❌ Disabled'}")
+            click.echo(f"  AI Voice: {'✅ Enabled' if ai_enabled else '❌ Silenced'}")
             click.echo()
             return
         
-        # Set API key if provided
         if api_key:
             if config.set_api_key(api_key):
-                print_success("✅ API key saved successfully!")
-                # Auto-enable AI commits when key is set
+                print_success("The Secret Key has been inscribed into the configuration!")
                 config.enable_ai_commits(True)
-                print_success("✅ AI commits enabled!")
+                print_success("The Goblin's AI voice has been awakened!")
             else:
-                print_error("❌ Failed to save API key")
+                print_error("The inscription failed. The key is rejected.")
                 sys.exit(1)
         
-        # Enable/disable AI commits
         if enable is not None:
             current_key = config.get_api_key()
             if not current_key and enable:
-                print_error("❌ Cannot enable AI commits: No API key configured")
-                click.echo("💡 Set your API key first: gitgoblin enchant --api-key YOUR_KEY")
+                print_error("You cannot wake the voice without a Secret Key!")
+                click.echo("💡 Tip: Bestow a key first: gitgoblin enchant --api-key YOUR_KEY")
                 sys.exit(1)
             
             if config.enable_ai_commits(enable):
                 if enable:
-                    print_success("✅ AI commits enabled!")
-                    click.echo("🤖 GitGoblin will now use AI to generate commit messages")
+                    print_success("The Goblin now speaks with AI wisdom!")
+                    click.echo("🤖 Descriptive inscriptions will now flow like magic.")
                 else:
-                    print_success("✅ AI commits disabled!")
-                    click.echo("📝 GitGoblin will use simple timestamp messages")
+                    print_success("The Goblin's voice has been silenced.")
+                    click.echo("📝 It will return to muttering simple timestamps.")
             else:
-                print_error("❌ Failed to update configuration")
+                print_error("The enchantment failed to take hold.")
                 sys.exit(1)
         
-        # If no options provided, show help
         if not api_key and enable is None and not show:
-            click.echo("🧙 GitGoblin AI Configuration\n")
-            click.echo("Options:")
-            click.echo("  --api-key, -k    Set Groq API key")
-            click.echo("  --enable         Enable AI commit messages")
-            click.echo("  --disable        Disable AI commit messages")
-            click.echo("  --show           Show current configuration")
-            click.echo("\nExample:")
-            click.echo("  gitgoblin enchant --api-key sk-your-key-here")
+            click.echo("🧙 The Master's Guide to Enchantment\n")
+            click.echo("Runes:")
+            click.echo("  --api-key, -k    Bestow a Secret Key (Groq API)")
+            click.echo("  --enable         Awaken the AI voice")
+            click.echo("  --disable        Silence the AI voice")
+            click.echo("  --show           Reveal current enchantments")
+            click.echo("\nIncantations:")
+            click.echo("  gitgoblin enchant --api-key sk-your-key")
             click.echo("  gitgoblin enchant --enable")
             click.echo("  gitgoblin enchant --show")
             

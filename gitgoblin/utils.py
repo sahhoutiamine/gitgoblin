@@ -11,32 +11,36 @@ import click
 def print_banner():
     """Print the GitGoblin banner"""
     banner = """
-    ╔═══════════════════════════════════════╗
-    ║         👹 G I T G O B L I N 👹      ║
-    ║   Your Mischievous Git Companion      ║
-    ╚═══════════════════════════════════════╝
+    ┌─────────────────────────────────────────────────────────┐
+    │  👺  G I T G O B L I N : THE HOARDER OF COMMITS  👺  │
+    └─────────────────────────────────────────────────────────┘
+          _      _
+        >(.)__ <(.)__
+         (___/  (___/ 
+    
+    "Watching your code like a dragon watches its gold!"
     """
     click.echo(click.style(banner, fg='green', bold=True))
 
 
 def print_success(message):
     """Print success message"""
-    click.echo(click.style(f"✅ {message}", fg='green'))
+    click.echo(click.style(f"✨ [GLORY] {message}", fg='green'))
 
 
 def print_error(message):
     """Print error message"""
-    click.echo(click.style(f"❌ {message}", fg='red'))
+    click.echo(click.style(f"💀 [DOOM] {message}", fg='red'))
 
 
 def print_info(message):
     """Print info message"""
-    click.echo(click.style(f"💡 {message}", fg='cyan'))
+    click.echo(click.style(f"🔮 [SIGHT] {message}", fg='cyan'))
 
 
 def print_warning(message):
     """Print warning message"""
-    click.echo(click.style(f"⚠️  {message}", fg='yellow'))
+    click.echo(click.style(f"⚠️  [OMEN] {message}", fg='yellow'))
 
 
 class GoblinStatus:
@@ -134,63 +138,63 @@ class GoblinStatus:
     
     def display(self):
         """Display complete status"""
-        click.echo("=" * 60)
-        click.echo(click.style("👹 GITGOBLIN STATUS REPORT", fg='green', bold=True))
-        click.echo("=" * 60)
+        click.echo("📜 " + "=" * 57)
+        click.echo(click.style("👺 THE GOBLIN'S CHRONICLE (Status Report)", fg='green', bold=True))
+        click.echo("📜 " + "=" * 57)
         click.echo()
         
         # Active status
         is_active = self.is_active()
         if is_active:
-            click.echo(click.style("🟢 Goblin Status: ACTIVE & WATCHING", fg='green', bold=True))
-            click.echo("   The goblin is hoarding commits automatically")
+            click.echo(click.style("🟢 SPIRIT STATUS: AWAKENED & HUNGRY", fg='green', bold=True))
+            click.echo("   The goblin is lurking in the shadows, hoarding your edits.")
         else:
-            click.echo(click.style("🔴 Goblin Status: BANISHED", fg='red', bold=True))
-            click.echo("   Use 'gitgoblin summon' to awaken the goblin")
+            click.echo(click.style("🔴 SPIRIT STATUS: BANISHED TO THE VOID", fg='red', bold=True))
+            click.echo("   The dungeon is quiet. Use 'gitgoblin summon' to wake the beast.")
         
         click.echo()
-        click.echo("-" * 60)
+        click.echo("⚔️ " + "-" * 58)
         click.echo()
         
         # Repository info
-        click.echo(click.style("📂 Repository Information:", fg='cyan', bold=True))
-        click.echo(f"   Path: {self.repo_path}")
-        click.echo(f"   Branch: {self.get_branch()}")
+        click.echo(click.style("🏰 CURRENT DUNGEON (Repository):", fg='cyan', bold=True))
+        click.echo(f"   Realm Path: {self.repo_path}")
+        click.echo(f"   Guild Branch: {self.get_branch()}")
         
         remote = self.get_remote_status()
         if remote:
-            click.echo(f"   Remote: {remote}")
+            click.echo(f"   Magic Portal (Remote): {remote}")
         
         click.echo()
         
         # Last commit
         last_message, time_ago = self.get_last_commit()
         if last_message:
-            click.echo(click.style("📜 Last Commit:", fg='cyan', bold=True))
-            click.echo(f"   Message: {last_message}")
-            click.echo(f"   Time: {time_ago}")
+            click.echo(click.style("💎 LATEST HOARDED TREASURE (Last Commit):", fg='cyan', bold=True))
+            click.echo(f"   Inscription: {last_message}")
+            click.echo(f"   Discovery: {time_ago}")
         else:
-            click.echo(click.style("📜 Last Commit: None found", fg='yellow'))
+            click.echo(click.style("💎 TREASURES: None found. The vault is empty!", fg='yellow'))
         
         click.echo()
         
         # Uncommitted changes
         changes = self.get_uncommitted_changes()
         if changes > 0:
-            click.echo(click.style(f"⚠️  Uncommitted Changes: {changes} file(s)", fg='yellow', bold=True))
-            click.echo("   💡 Tip: Use 'gitgoblin sneak' to commit them now")
+            click.echo(click.style(f"⚠️  LOOSE SHARDS: {changes} uncommitted file(s)", fg='yellow', bold=True))
+            click.echo("   💡 Tip: Use 'gitgoblin sneak' to snatch them now!")
         else:
-            click.echo(click.style("✅ Working Tree: Clean", fg='green'))
+            click.echo(click.style("✅ THE DUNGEON IS TIDY: Working Tree Clean", fg='green'))
         
         click.echo()
-        click.echo("=" * 60)
+        click.echo("📜 " + "=" * 57)
         click.echo()
         
         # Helpful tips
         if not is_active:
-            print_info("Start watching: gitgoblin summon")
+            print_info("Awaken the beast: gitgoblin summon")
         else:
-            print_info("Stop watching: gitgoblin banish")
+            print_info("Send it back: gitgoblin banish")
         
-        print_info("Force commit: gitgoblin sneak")
+        print_info("The stealthy snatch: gitgoblin sneak")
         click.echo()
