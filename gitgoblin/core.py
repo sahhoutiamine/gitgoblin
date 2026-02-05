@@ -246,6 +246,49 @@ class GoblinWatcher:
         except subprocess.CalledProcessError as e:
             print(f"❌ Stealth operation failed: {e}")
             return False
+
+    def ritual_predict(self):
+        """Stage changes and generate a commit message for the ritual"""
+        try:
+            # Check for changes
+            result = subprocess.run(
+                ['git', 'status', '--porcelain'],
+                cwd=self.repo_path,
+                capture_output=True,
+                text=True,
+                timeout=5
+            )
+            
+            if not result.stdout.strip():
+                print("👻 Nothing to commit - working tree clean")
+                return None
+            
+            # Stage all changes
+            print("🗡️  Staging all changes...")
+            subprocess.run(
+                ['git', 'add', '-A'],
+                cwd=self.repo_path,
+                check=True,
+                timeout=10
+            )
+            
+            # Generate message
+            if self.ai_generator and self.config.is_ai_enabled():
+                try:
+                    print("🤖 Generating AI commit message for all changes...")
+                    ai_message = self.ai_generator.generate_sneak_commit_message()
+                    if ai_message:
+                        return ai_message
+                except Exception as e:
+                    print(f"⚠️  AI generation failed: {e}")
+            
+            # Fallback
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            return f"Ritual commit at {timestamp}"
+            
+        except subprocess.CalledProcessError as e:
+            print(f"❌ Ritual preparation failed: {e}")
+            return None
     
     def run(self):
         """Run the watcher in foreground"""

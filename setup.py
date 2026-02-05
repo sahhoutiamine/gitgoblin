@@ -12,7 +12,7 @@ long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 setup(
     name='gitgoblin',
-    version='1.0.0',
+    version='1.1.0',
     description='👹 A mischievous goblin that automatically commits and pushes your Git changes',
     long_description=long_description,
     long_description_content_type='text/markdown',

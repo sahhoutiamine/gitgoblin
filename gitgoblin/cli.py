@@ -5,6 +5,8 @@ GitGoblin CLI - Your mischievous git automation companion
 
 import click
 import sys
+import re
+from pathlib import Path
 from .core import GoblinWatcher
 from .utils import GoblinStatus, print_banner, print_success, print_error, print_info
 from .config import GoblinConfig
@@ -29,14 +31,51 @@ def cli(ctx):
 @click.option('--path', '-p', default='.', help='Path to git repository')
 @click.option('--debounce', '-d', default=2, help='Seconds to wait before committing')
 @click.option('--daemon', '-bg', is_flag=True, help='Run as background daemon')
-def summon(path, debounce, daemon):
+@click.option('--ritual', is_flag=True, help='Perform the summoning ritual (commit & version bump)')
+def summon(path, debounce, daemon, ritual):
     """
     👹 Summon GitGoblin to watch your files
     
     The goblin will monitor your repository and automatically
     commit & push changes whenever you save a file.
     """
+
     print_banner()
+    
+    if ritual:
+        click.echo("🕯️  Beginning the ritual...\n")
+        try:
+            watcher = GoblinWatcher(path)
+            message = watcher.ritual_predict()
+            
+            if not message:
+                return
+
+            click.echo(f"\n📜 Prophesized Commit:\n{message}\n")
+            
+            if click.confirm("Do you want to seal this fate?"):
+                # Update version before commit so it's included
+                setup_path = Path(path) / 'setup.py'
+                if setup_path.exists():
+                    content = setup_path.read_text(encoding='utf-8')
+                    new_content = re.sub(r"version=['\"]([^'\"]+)['\"]", "version='1.1.1'", content)
+                    setup_path.write_text(new_content, encoding='utf-8')
+                    click.echo("🆙 Version ascended to 1.1.1")
+                else:
+                    click.echo("⚠️  setup.py missing, version unchanged")
+
+                if watcher.sneak_commit(message):
+                    print_success("✨ Ritual complete!")
+                else:
+                    print_error("❌ The ritual was interrupted.")
+            else:
+                click.echo("The ritual was aborted.")
+            return
+
+        except Exception as e:
+            print_error(f"Ritual failed: {e}")
+            sys.exit(1)
+
     click.echo("👹 Summoning GitGoblin...\n")
     
     try:

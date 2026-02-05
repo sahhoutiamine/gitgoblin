@@ -1,6 +1,6 @@
 # 👹 GitGoblin: The Mischievous Hoarder of Commits
 
-**Version 1.1.0** | **Created by the Great Goblin Master: [sahhoutiamine](https://github.com/sahhoutiamine)**
+**Version 1.1.1** | **Created by the Great Goblin Master: [sahhoutiamine](https://github.com/sahhoutiamine)**
 
 > *"Deep within the `.git` dungeons of your project, a creature stirs. It doesn't sleep. It doesn't drink coffee. It only watches. It only waits. It only... hoards."*
 
@@ -25,6 +25,7 @@ GitGoblin feeds on two things: **forgotten commits** and **developer laziness**.
 - 🪙 **Hoarding Instinct**: Automatically commits and pushes files the moment you save them.
 - 🌀 **Magical Portals**: Instant synchronization with your remote GitHub repository.
 - 🤖 **AI Brain**: Generate descriptive commit messages using Groq AI - blazingly fast! (NEW!)
+- 🕯️ **Summoning Ritual**: Stage changes, bump project version to 1.1.1, and commit with confirmation! (NEW!)
 - 🗡️ **Stealth Operations**: Force a commit with `sneak` when you're feeling especially lazy.
 - 🔮 **Crystal Ball**: Peer into the Goblin's mind to see what it's been up to.
 - 🎭 **Daemon Possession**: Can run as a background spirit, haunting your directory forever (or until banished).
@@ -59,9 +60,11 @@ pip install -e .
 - `--path`: Choose which dungeon (directory) to watch.
 - `--debounce`: How many seconds the goblin should wait before pouncing (default: 2s).
 - `--daemon`: Turn the goblin into a background spirit (Linux/Mac).
+- `--ritual`: **The Summoning Ritual.** A special ceremony that stages changes, predicts a commit message, asks for your confirmation, and **ascends the project version to 1.1.1** before pushing.
 
 ```bash
-gitgoblin summon --debounce 5
+# Start the ceremony
+gitgoblin summon --ritual
 ```
 
 ### ⚡ `gitgoblin sneak`
