@@ -6,6 +6,7 @@ import subprocess
 from pathlib import Path
 from datetime import datetime
 import click
+from .config import GoblinConfig
 
 
 def print_banner():
@@ -49,6 +50,7 @@ class GoblinStatus:
     def __init__(self, repo_path='.'):
         self.repo_path = Path(repo_path).resolve()
         self.pid_file = self.repo_path / '.git' / 'gitgoblin.pid'
+        self.config = GoblinConfig(repo_path)
     
     def is_active(self):
         """Check if GitGoblin is currently running"""
@@ -164,6 +166,20 @@ class GoblinStatus:
         remote = self.get_remote_status()
         if remote:
             click.echo(f"   Magic Portal (Remote): {remote}")
+        
+        click.echo()
+
+        # AI Wisdom
+        click.echo(click.style("🧙 GOBLIN ENCHANTMENTS (AI Status):", fg='cyan', bold=True))
+        ai_enabled = self.config.is_ai_enabled()
+        api_key = self.config.get_api_key()
+        
+        if api_key:
+            masked_key = api_key[:8] + "..." + api_key[-4:] if len(api_key) > 12 else "***"
+            click.echo(f"   Secret Key: {masked_key}")
+            click.echo(f"   AI Voice: {'✅ Awakened' if ai_enabled else '❌ Silenced'}")
+        else:
+            click.echo("   Secret Key: None. The goblin is currently witless.")
         
         click.echo()
         

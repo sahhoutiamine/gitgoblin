@@ -32,7 +32,8 @@ def cli(ctx):
 @click.option('--debounce', '-d', default=2, help='Seconds to wait for silence')
 @click.option('--daemon', '-bg', is_flag=True, help='Run as a lingering spirit')
 @click.option('--ritual', is_flag=True, help='Perform the ritual of ascension (v1.1.1)')
-def summon(path, debounce, daemon, ritual):
+@click.option('--hoard', is_flag=True, help='Only hoard treasures locally, do not push')
+def summon(path, debounce, daemon, ritual, hoard):
     """
     👹 Awaken GitGoblin to haunt your files
     
@@ -40,41 +41,12 @@ def summon(path, debounce, daemon, ritual):
     change and hoarding it in the GitHub vault.
     """
     print_banner()
+
+    if daemon and ritual:
+        print_error("A lingering spirit (daemon) cannot perform an interactive ritual!")
+        click.echo("💡 Use either --daemon or --ritual, not both.")
+        sys.exit(1)
     
-    if ritual:
-        click.echo("🕯️  Chanting the incantations of the Ritual...\n")
-        try:
-            watcher = GoblinWatcher(path)
-            message = watcher.ritual_predict()
-            
-            if not message:
-                return
-
-            click.echo(f"\n📜 Prophesized Commit:\n{message}\n")
-            
-            if click.confirm("Do you want to seal this fate?"):
-                # Update version before commit so it's included
-                setup_path = Path(path) / 'setup.py'
-                if setup_path.exists():
-                    content = setup_path.read_text(encoding='utf-8')
-                    new_content = re.sub(r"version=['\"]([^'\"]+)['\"]", "version='1.1.1'", content)
-                    setup_path.write_text(new_content, encoding='utf-8')
-                    click.echo("🆙 Version ascended to 1.1.1")
-                else:
-                    click.echo("⚠️  setup.py missing, version unchanged")
-
-                if watcher.sneak_commit(message):
-                    print_success("✨ Ritual complete!")
-                else:
-                    print_error("❌ The ritual was interrupted.")
-            else:
-                click.echo("The ritual was aborted.")
-            return
-
-        except Exception as e:
-            print_error(f"Ritual failed: {e}")
-            sys.exit(1)
-
     click.echo("👹 Preparing the summoning circles...\n")
     
     try:
@@ -85,11 +57,20 @@ def summon(path, debounce, daemon, ritual):
             click.echo("💡 Tip: Use 'gitgoblin banish' to cast it away\n")
             watcher.run_daemon()
         else:
-            click.echo("🔍 The Goblin's eyes are open. It sees your edits...")
-            click.echo("🪙 Collecting its hoard of commits automatically...")
+            if ritual:
+                click.echo("🕯️  The Goblin is now watching for changes to perform the Ritual...")
+                if hoard:
+                    click.echo("🪙  Note: The Goblin is in Hoard Mode (Local-only).")
+            elif hoard:
+                click.echo("🪙  The Goblin is now in Hoard Mode (Local-only).")
+                click.echo("🛡️  Treasures will be kept in the local vault.")
+            else:
+                click.echo("🔍 The Goblin's eyes are open. It sees your edits...")
+                click.echo("🪙 Collecting its hoard of commits automatically...")
+            
             click.echo("💡 Press Ctrl+C to send the goblin back to sleep\n")
             click.echo("-" * 60)
-            watcher.run()
+            watcher.run(ritual_mode=ritual, hoard_mode=hoard)
             
     except ValueError as e:
         print_error(f"The summoning failed: {e}")

@@ -6,6 +6,7 @@ import os
 import time
 import subprocess
 import signal
+import re
 from pathlib import Path
 from datetime import datetime
 from watchdog.observers import Observer
@@ -128,8 +129,8 @@ class GoblinWatcher:
         except:
             return f"Updated {file_path} at {timestamp}"
     
-    def commit_and_push(self, file_path):
-        """Commit and push a file to the GitHub vault"""
+    def commit_and_push(self, file_path, push=True):
+        """Commit and (optionally) push a file to the GitHub vault"""
         try:
             print(f"🪙 Hoarding gems from: {file_path}")
             
@@ -155,17 +156,19 @@ class GoblinWatcher:
                 capture_output=True
             )
             
-            # Push
-            print(f"🚀 Yeeting the hoard to the GitHub abyss...")
-            subprocess.run(
-                ['git', 'push'],
-                cwd=self.repo_path,
-                check=True,
-                timeout=30,
-                capture_output=True
-            )
-            
-            print(f"✅ Successfully hoarded treasures from: {file_path}")
+            # Push if not in hoard mode
+            if push:
+                print(f"🚀 Yeeting the hoard to the GitHub abyss...")
+                subprocess.run(
+                    ['git', 'push'],
+                    cwd=self.repo_path,
+                    check=True,
+                    timeout=30,
+                    capture_output=True
+                )
+                print(f"✅ Successfully hoarded treasures in the cloud: {file_path}")
+            else:
+                print(f"✅ Successfully hoarded treasures in your local vault: {file_path}")
             print("-" * 60)
             return True
             
@@ -174,7 +177,7 @@ class GoblinWatcher:
             print("-" * 60)
             return False
     
-    def sneak_commit(self, custom_message=None):
+    def sneak_commit(self, custom_message=None, push=True):
         """Perform an immediate commit of all changes"""
         try:
             # Check for changes
@@ -233,13 +236,16 @@ class GoblinWatcher:
             )
             
             # Push
-            print("🚀 Yeeting the entire hoard to the GitHub abyss...")
-            subprocess.run(
-                ['git', 'push'],
-                cwd=self.repo_path,
-                check=True,
-                timeout=30
-            )
+            if push:
+                print("🚀 Yeeting the entire hoard to the GitHub abyss...")
+                subprocess.run(
+                    ['git', 'push'],
+                    cwd=self.repo_path,
+                    check=True,
+                    timeout=30
+                )
+            else:
+                print("✅ Treasures secured in the local vault.")
             
             return True
             
@@ -290,8 +296,21 @@ class GoblinWatcher:
             print(f"❌ Ritual preparation failed: {e}")
             return None
     
-    def run(self):
+    def run(self, ritual_mode=False, hoard_mode=False):
         """Run the watcher in foreground"""
+        if ritual_mode:
+            import click
+            print("🕯️  The Ritual of Observation has begun...")
+            print("💡 The Goblin will wait for a save, then prophesy a commit.")
+            print("💡 You must seal the fate of each hoard with 'y'.")
+            if hoard_mode:
+                print("💡 The Goblin will only hoard treasures locally.")
+            print("-" * 60)
+        elif hoard_mode:
+            print("🪙  The Goblin is now in Hoard Mode (Local-only).")
+            print("💡 Treasures will be kept in the local vault.")
+            print("-" * 60)
+
         event_handler = GoblinFileHandler(self.repo_path, self.debounce_seconds)
         observer = Observer()
         observer.schedule(event_handler, str(self.repo_path), recursive=True)
@@ -302,7 +321,27 @@ class GoblinWatcher:
                 time.sleep(1)
                 ready_files = event_handler.get_pending_files()
                 for file_path in ready_files:
-                    self.commit_and_push(file_path)
+                    if ritual_mode:
+                        import click
+                        print(f"\n👁️  The Goblin found changes in: {file_path}")
+                        message = self.generate_commit_message(file_path)
+                        print(f"📜 Prophesied Inscription: {message}")
+                        
+                        if click.confirm("Do you wish to seal this treasure in the vault?"):
+                            # Perform version bump
+                            setup_path = self.repo_path / 'setup.py'
+                            if setup_path.exists():
+                                content = setup_path.read_text(encoding='utf-8')
+                                new_content = re.sub(r"version=['\"]([^'\"]+)['\"]", "version='1.1.1'", content)
+                                setup_path.write_text(new_content, encoding='utf-8')
+                                print("🆙 The version has ascended to 1.1.1")
+                            
+                            # Now commit and push
+                            self.commit_and_push(file_path, push=not hoard_mode)
+                        else:
+                            print("🌑 The Goblin retreats. The change remains unrecorded.")
+                    else:
+                        self.commit_and_push(file_path, push=not hoard_mode)
         except KeyboardInterrupt:
             observer.stop()
         

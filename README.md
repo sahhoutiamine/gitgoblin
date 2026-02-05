@@ -23,6 +23,7 @@ GitGoblin feeds on two things: **forgotten commits** and **developer laziness**.
 
 - 🔍 **Goblin Senses**: Real-time monitoring of your codebase. It sees everything.
 - 🪙 **Hoarding Instinct**: Automatically commits and pushes files the moment you save them.
+- 🏰 **The Local Vault**: Use `--hoard` to keep your treasures in the local dungeon and skip the push! (NEW!)
 - 🌀 **Magical Portals**: Instant synchronization with your remote GitHub repository.
 - 🤖 **AI Brain**: Generate descriptive commit messages using Groq AI - blazingly fast! (NEW!)
 - 🕯️ **Summoning Ritual**: Stage changes, bump project version to 1.1.1, and commit with confirmation! (NEW!)
@@ -60,6 +61,7 @@ pip install -e .
 - `--path`: Choose which dungeon (directory) to watch.
 - `--debounce`: How many seconds the goblin should wait before pouncing (default: 2s).
 - `--daemon`: Turn the goblin into a background spirit (Linux/Mac).
+- `--hoard`: **The Hoarder's Path.** Skip the GitHub abyss and keep your commits safe in your local vault.
 - `--ritual`: **The Summoning Ritual.** A special ceremony that stages changes, predicts a commit message, asks for your confirmation, and **ascends the project version to 1.1.1** before pushing.
 
 ```bash
